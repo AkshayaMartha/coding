@@ -1,0 +1,107 @@
+use batch2;
+
+select * from Academics;
+select * from Accounts;
+select * from examination;
+select * from Sports;
+select * from Clubs;
+
+
+select A.name,A.ID,A.location,A.gender from Academics A
+INNER JOIN examination E 
+ON A.ID=E.sID and E.cgpa>7
+INNER JOIN Accounts Ac
+ON E.sID=Ac.sID and Ac.status='paid';
+
+
+
+
+-- creating a view on multiple tables at once
+create view above7_paidFees as
+select A.name,A.ID,A.location,A.gender from Academics A
+INNER JOIN examination E 
+ON A.ID=E.sID and E.cgpa>7
+INNER JOIN Accounts Ac
+ON E.sID=Ac.sID and Ac.status='paid';
+
+-- extracting data from the view.....
+select * from above7_paidFees where gender='f';
+
+--CREATING THE VIEW ON MULTIPLE TABLES and extract from all tables
+create view studentData as
+select A.name, A.ID,A.location,
+Ac.fees, Ac.status,
+E.no_of_bl,E.cgpa,
+S.sport, C.clubName, C.role
+from Academics A
+LEFT OUTER JOIN Accounts ac on ac.sID=A.ID 
+LEFT OUTER JOIN examination E on e.sID=A.ID
+LEFT OUTER JOIN Sports S on S.sID=A.ID
+LEFT OUTER JOIN Clubs C on C.sID=A.ID;
+
+SELECT * FROM studentData;
+
+
+
+use batch1;
+
+create function addss(@value1 int,@value2 int)
+returns int
+begin
+	return @value1+@value2
+end;
+
+select dbo.addss(10,59);
+
+select * from employees;
+
+--creating the procedure
+create procedure top5Employees
+as
+begin
+select top 5 * from employees order by salary desc;
+end;
+-- executing the procedure
+exec top5Employees
+-- deleting the procedure
+drop procedure top5Employees
+
+
+
+use Batch1;
+
+create table emp( ID int primary key,name varchar(20) not null,
+salary int );
+
+insert into emp values(1,'Likitha',30000),(13,'Bharath',100000),
+(15,'Yashwanth',20003),(16,'Aishwarya',50000),
+(20,'Varsha',10000),(27,'Lokesh',1000000);
+
+
+
+
+create table salaryLogData(LogID int identity primary key,
+ID int, oldSalary int, newSalary int);
+
+create trigger trg 
+ON emp
+AFTER update
+AS
+BEGIN 
+	INSERT into salaryLogData(ID,oldSalary,newSalary)
+	select i.ID,
+	d.salary as OldSalary,
+	i.salary as NewSalary
+	from  
+	inserted i
+	JOIN deleted d ON i.ID=d.ID
+end;
+
+
+select * from emp;  -- data inside the table
+select * from salaryLogData; -- empty table until update
+
+insert into emp values(8,'Abhinav',50000); -- no trigger
+update emp set salary=100000 where name='Varsha'; -- trigger activates
+-- Trigger has been created only on update, so it'll be activated 
+-- upon UPDATE command and you'll see 2 rows affected for one Update
