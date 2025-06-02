@@ -1,0 +1,193 @@
+use batch1;
+
+create table college(name varchar(20) not null, ID int primary key, 
+gender char(1) check (gender in ('f','m','o')), mobile char(10), 
+department char(4) check (department in ('CSE','ECE','IT'))
+);
+
+insert into college values('Nagesh',8,'m','874525121','CSE'),
+('Srinivas',7,'m','976414512','CSE'),
+('Rahul',9,'m','746516594','IT'),
+('Shiva',11,'m','8524236232','ECE'),
+('Abhi',13,'m','763126127','ECE'),
+('Nithin',17,'m','964364511','IT');
+
+
+select * from college;
+
+select * from college where department='CSE';
+
+select count(*) as CSE_Count from college where department='CSE';
+
+select count(*) as ECE_Count from college where department='ECE';
+
+select count(*) as IT_Count from college where department='IT';
+
+select department, count(*) as Total from college group by department;
+
+select department, count(*) as Total from college group by department 
+order by department desc;
+
+
+
+select name,ID, gender from students
+where ID between 10 and 40 
+order by gender;
+
+
+
+
+use batch2;
+
+create table CLASS(name varchar(20) not null,
+ID int primary key, Dept varchar(5), mobile char(10),
+marks int,location varchar(20)
+);
+
+insert into CLASS values('Anush',24,'IT','78452166',74,'KPHB'),
+('Kavitha',1,'CSE','885412166',80,'Medchal'),
+('Arya',14,'CSD','985552166',32,'Erragadda'),
+('Ashwini',29,'IT','652052166',90,'Kompalli'),
+('Chandu',31,'CSI','778952166',100,'Dilsukhnagar'),
+('Sai Kiran',18,'CSC','996152166',99,'Uppal X Road'),
+('Reshmi',21,'CSC','885252166',99,'Manikonda'),
+('Vamshi',16,'CSC','685222166',27,'Vangapadu'),
+('Swathi',8,'IT','587432166',96,'KPHB'),
+('Kumari',23,'CSD','968452166',69,'Banjarahills');
+
+insert into CLASS values('Pavani',25,'CSC','874551265',5,'8')
+/*retrieve everything by default with Primary key order*/
+select * from CLASS;
+/*retrieve everything in ascending order by name*/
+select * from CLASS order by name;
+/*retrieve everything in ascending order by Department*/
+select * from CLASS order by Dept;
+/*retrieve everything in descending order by Department*/
+select * from CLASS order by Dept desc;
+/*retrieve everything in ascending order by location*/
+select * from CLASS order by location;
+/*retrieve everything in descending order by location*/
+select * from CLASS order by location desc;
+
+
+
+
+use batch2;
+
+select * from CLASS;
+
+select Dept from CLASS group by Dept;
+
+select Dept from CLASS;
+/*counts no of people in each department*/
+select Dept,count(*) from CLASS group by Dept;
+/*write the 2 lines above*/
+
+/*Display Dept wise no_of_people and total marks*/
+select dept,count(*) as no_of_people, sum(marks) as Total
+from CLASS group by Dept;
+
+select sum(marks) as Total from CLASS;
+
+/*write about your EX*/
+select dept,count(*) as no_of_people, sum(marks) as Total,
+avg(marks) as average
+from CLASS group by Dept;
+
+select * from CLASS;
+
+
+
+
+
+
+
+
+select * from promotions;
+
+select * from employees;
+
+
+use Batch2;
+
+select * from CLASS
+
+select * from employees;
+select * from promotions;
+
+/*Extract all columns and rows from employees and promotions
+and the data of employees who has got promotion*/
+select * from employees E
+INNER JOIN promotions P
+ON E.ID=P.empID;
+
+/*Left Outer Join on all employees, who got promtions and also who didnt get*/
+select E.name,E.location,E.salary, P.salaryInc,P.pDate from employees E
+LEFT OUTER JOIN promotions P
+ON E.ID=P.empID;
+/*Left Outer Join on all employees, who got promtions and also who didnt get*/
+select E.name,E.location,E.salary, P.salaryInc,P.pDate from employees E
+RIGHT OUTER JOIN promotions P
+ON E.ID=P.empID;
+
+
+use batch1;
+
+select * from employees;
+
+select * from promotions;
+
+select * from pro;
+
+select E.empName,E.salary,E.Location, P.prom_ID, P.pDate,P.emp_ID
+from employees E RIGHT OUTER JOIN promotions P
+ON E.empID=P.emp_ID;
+
+select E.empName,E.salary,E.Location, P.prom_ID, P.pDate,P.emp_ID
+from employees E FULL OUTER JOIN promotions P
+ON E.empID=P.emp_ID;
+
+/*It will retrieve all the rows from Employee table and will keep
+NULL values on the right side for those not matched
+It will also retrieve all the rows from the Promotions table and will 
+keep NULL values on the left side for those not matched
+*/
+
+create table mentor(pID int primary key,
+name varchar(20), mID int);
+
+insert into mentor(pID,name) values(1,'Sasntosh');
+insert into mentor values(2,'Prakash',1),
+(3,'Shiva',1),(4,'Sai Kumar',1);
+
+insert into mentor values(5,'Rahul',2),
+(6,'Hemanth',2),(7,'Koushik',2);
+
+insert into mentor values(8,'Mahesh',3),
+(9,'Naresh',3),(10,'Praveen',3);
+
+insert into mentor values(11,'Ankita',8),
+(12,'Uday',6);
+
+select * from mentor;
+
+
+select m1.Name Higher ,m2.Name Under from mentor m1
+JOIN mentor m2
+on m1.pID=m2.mID;
+
+/*
+What is meant by DBA?????
+What is meant by DBO????? 
+
+*/
+
+/*Extracting specific columns from both tables by using
+CARTESIAN JOIN ON employees and promotions tables*/
+select E.empName,E.salary,E.Location,P.prom_ID, 
+P.pDate,P.emp_ID from employees E 
+CROSS JOIN promotions P 
+
+/*Extracting all columns from both tables by using 
+CARTESIAN JOIN ON employees and promotions tables*/
+select * from employees CROSS JOIN promotions;
