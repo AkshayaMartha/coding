@@ -1,0 +1,125 @@
+use batch1;
+
+select * from mentor;
+
+alter table mentor add salary int;
+
+update mentor set salary=450000 where pID=1; 
+
+update mentor set salary=5000 where pID=2; 
+update mentor set salary=29000 where pID=3; 
+update mentor set salary=500000 where pID=4; 
+update mentor set salary=40000 where pID=5; 
+update mentor set salary=2000 where pID=6; 
+update mentor set salary=25000 where pID=7; 
+update mentor set salary=3000 where pID=8; 
+update mentor set salary=38000 where pID=9; 
+update mentor set salary=1000 where pID=10; 
+update mentor set salary=1500 where pID=11; 
+update mentor set salary=5000 where pID=12; 
+
+select * from mentor
+
+
+select m1.name,m1.salary,m2.salary from mentor m1 JOIN mentor m2
+ON m2.pID=m1.mID where m1.salary>m2.salary;
+
+
+
+use batch1;
+
+select * from employees;
+/*
+extract names,IDs of people who salary is 
+more than the average salary of all, who are
+belonging to IT dept
+*/
+
+select avg(salary) from employees;
+/*
+Extract data of people who salary is 
+more than the average salary of all, who are
+belonging to HR dept
+*/
+
+select empID,empName,Dept,salary from employees 
+where Dept='HR' and salary > (
+select avg(salary) from employees
+);
+
+
+
+
+select * from employees where Dept='HR';
+
+select * from college;
+
+
+
+select empID,empName,Dept,salary from employees 
+where Dept='HR' and empName > (
+select avg(salary) from employees
+);
+
+
+use batch1;
+
+select * from employees;
+
+/*Extract data of employees in addition
+to their total number of people in their department*/
+
+select empName,empID,salary,Dept,
+(select count(*) from employees where Dept=E.Dept)
+from employees E;
+
+/*Finding average salaries from all departments*/
+SELECT DEPT,AVG(SALARY) FROM employees GROUP BY Dept;
+/*Sort the details based on avg salary, also group by department*/
+SELECT DEPT,AVG(SALARY) FROM employees GROUP BY Dept
+order by avg(salary);
+/*Finding the lowest Department's Average salary among all Departments*/
+SELECT top 1 DEPT,AVG(SALARY) FROM employees GROUP BY Dept
+order by avg(salary);
+/*Extracting data of everyone from the department with lowest average salary*/
+select * from employees where Dept = (
+SELECT top 1 DEPT FROM employees GROUP BY Dept
+order by avg(salary));
+
+select count(*) from employees where dept='SP';
+
+use batch1;
+
+
+
+select * from employees where Dept = (
+SELECT top 1 DEPT FROM employees GROUP BY Dept
+order by avg(salary));
+
+
+/*Extracting data of employees whose salary is MAXIMUM 
+in their department */
+
+select * from employees where salary IN (
+	select max(salary) from employees group by Dept)
+
+
+select * from employees;
+
+select * from employees where DOJ between 
+'2023-01-01' and '2024-12-31';
+
+
+use Batch1;
+
+select * from employees where salary IN (
+	select max(salary) from employees group by Dept)
+
+select * from employees E where salary IN (
+	select max(salary) from employees where dept=E.dept)
+
+
+create INDEX ind_on_dept ON employees(Dept);
+
+
+select * from employees;	 
